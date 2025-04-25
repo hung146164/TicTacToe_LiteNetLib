@@ -1,5 +1,6 @@
 using LiteNetLib;
 using LiteNetLib.Utils;
+using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -28,6 +29,10 @@ public class NetworkClient : MonoBehaviour,INetEventListener
     {
         Init();
     }
+    private void Update()
+    {
+        _netManager.PollEvents();
+    }
     private void Init()
     {
         _writer= new NetDataWriter();
@@ -48,18 +53,10 @@ public class NetworkClient : MonoBehaviour,INetEventListener
     }
     public void OnConnectionRequest(ConnectionRequest request)
     {
-        throw new System.NotImplementedException();
+        Console.WriteLine($"Incoming connection from {request.RemoteEndPoint}");
     }
 
-    public void OnNetworkError(IPEndPoint endPoint, SocketError socketError)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void OnNetworkLatencyUpdate(NetPeer peer, int latency)
-    {
-        throw new System.NotImplementedException();
-    }
+    
 
     public void OnNetworkReceive(NetPeer peer, NetPacketReader reader, byte channelNumber, DeliveryMethod deliveryMethod)
     {
@@ -67,16 +64,10 @@ public class NetworkClient : MonoBehaviour,INetEventListener
         Debug.Log($"Data received from server: '{data}'");
     }
 
-    public void OnNetworkReceiveUnconnected(IPEndPoint remoteEndPoint, NetPacketReader reader, UnconnectedMessageType messageType)
-    {
-        throw new System.NotImplementedException();
-    }
-
+    
     public void OnPeerConnected(NetPeer peer)
     {
         Debug.Log("We connected to server at " + peer.Address + ":" + peer.Port);
-
-
         _server = peer;
     }
 
@@ -85,4 +76,18 @@ public class NetworkClient : MonoBehaviour,INetEventListener
         Debug.Log("Lost connection to server ");
 
     }
+    public void OnNetworkError(IPEndPoint endPoint, SocketError socketError)
+    {
+        //throw new System.NotImplementedException();
+    }
+
+    public void OnNetworkLatencyUpdate(NetPeer peer, int latency)
+    {
+        //throw new System.NotImplementedException();
+    }
+    public void OnNetworkReceiveUnconnected(IPEndPoint remoteEndPoint, NetPacketReader reader, UnconnectedMessageType messageType)
+    {
+        //throw new System.NotImplementedException();
+    }
+
 }
